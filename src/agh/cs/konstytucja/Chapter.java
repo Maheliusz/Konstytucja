@@ -11,8 +11,8 @@ public class Chapter {
     List<Article> articles = new ArrayList<>();
     String title;
     int number;
-    public Chapter(String title, int number){
-        this.title = title;
-        this.number = number;
+    public Chapter(){
+
     }
+
 }

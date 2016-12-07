@@ -14,8 +14,4 @@ public class Constitution{
     List<Chapter> chapters = new ArrayList<>();
     List<Chapter> articles = new ArrayList<>();
 
-    public Constitution(){
-
-    }
-
 }
