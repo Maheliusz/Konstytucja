@@ -6,4 +6,6 @@ public class Main {
 	// write your code here
         Constitution polishConsitution = new Constitution();
     }
+
+
 }
