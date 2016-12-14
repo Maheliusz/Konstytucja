@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Created by Michał Zakrzewski on 2016-12-01.
  */
-public class Parser{
+public class Parser {
     Constitution constitution;
     String folder = "C://Documents/Moje/Java/Konstytucja/src/agh/cs/konstytucja/";
     String path = "konstytucja.txt";
@@ -107,7 +107,7 @@ public class Parser{
         return res;
     }
 
-    public void parse(){
+    public Constitution parse() {
         try (BufferedReader br = new BufferedReader(new FileReader(folder + path))) {
             for (String line; (line = br.readLine()) != null; ) {
                 check(line);
@@ -116,9 +116,10 @@ public class Parser{
             System.out.println("Problem z odczytaniem pliku " + e.getMessage());
         }
         constitution.articles.forEach(this::joinWordPartsRunner);
+        return this.constitution;
     }
 
-    private void joinWordPartsRunner(Article article) throws IndexOutOfBoundsException{
+   private void joinWordPartsRunner(Article article) throws IndexOutOfBoundsException {
         String firstline;
         String secondline;
         firstline = article.text.get(0);
@@ -129,36 +130,35 @@ public class Parser{
         }
         if (firstline.endsWith("-"))
             joinWordParts(firstline, secondline);
-        //article.text.set(0, firstline);
-        //article.text.set(1, secondline);
+        article.text.set(0, firstline);
+        article.text.set(1, secondline);
         firstline = secondline;
-        System.out.println(firstline);
-        System.out.println(secondline);
-        System.out.println("XXXXXXXXXX");
+
         for (int i = 2; i < article.text.size(); i++) {
             secondline = article.text.get(i);
+
             if (firstline.endsWith("-"))
                 joinWordParts(firstline, secondline);
-            //article.text.set(i - 1, firstline);
-            //article.text.set(i, secondline);
-            System.out.println(firstline);
-            System.out.println(secondline);
-            System.out.println("XXXXXXXXXX");
+            article.text.set(i - 1, firstline);
+            article.text.set(i, secondline);
+
             firstline = secondline;
         }
     }
 
     private void joinWordParts(String firstline, String secondline) {
         String wordPart = new String();
-        char c;
-        int i = 0;
-
-        for (c = secondline.charAt(i); c != ' ' && c != '\n'; i++) {
+        char c = secondline.charAt(0);
+        for (int i = 1; c != ' ' && i < secondline.length(); c = secondline.charAt(i++)) {
             wordPart += c;
         }
-        firstline = firstline.substring(0, firstline.length() - 2) + wordPart;
-        secondline = secondline.substring(wordPart.length() + 1, secondline.length() - 1);
 
+        firstline = firstline.substring(0, firstline.length() - 1) + wordPart;
+        secondline = secondline.substring(wordPart.length() + 1, secondline.length());
+
+        //System.out.println(firstline);
+        //System.out.println(secondline);
+        //System.out.println(wordPart);
     }
 
 }

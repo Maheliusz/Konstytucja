@@ -13,7 +13,7 @@ public class Chapter {
     int number;
 
     public void print() {
-        System.out.println("ROZDZIAL " + number);
+        System.out.println("ROZDZIAŁ " + number);
         int i = 0;
         for (Article article; i < articles.size(); i++) {
             article = articles.get(i);

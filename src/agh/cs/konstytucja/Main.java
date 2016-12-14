@@ -7,7 +7,7 @@ public class Main {
 
         Constitution polishConsitution = new Constitution();
         Parser parser = new Parser(polishConsitution);
-        parser.parse();
+        polishConsitution = parser.parse();
         ShowTime show = new ShowTime(args, polishConsitution);
         show.parse();
 
