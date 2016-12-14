@@ -8,9 +8,9 @@ import java.util.List;
  * Created by Michał Zakrzewski on 2016-11-30.
  */
 public class Chapter {
-    List<Article> articles = new ArrayList<>();
-    String title;
-    int number;
+    public List<Article> articles = new ArrayList<>();
+    public String title;
+    public int number;
 
     public void print() {
         System.out.println("ROZDZIAŁ " + number);

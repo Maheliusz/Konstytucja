@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Michał Zakrzewski on 2016-11-30.
  */
 public class Constitution {
-    List<Chapter> chapters = new ArrayList<>();
-    List<Article> articles = new ArrayList<>();
+    public List<Chapter> chapters = new ArrayList<>();
+    public List<Article> articles = new ArrayList<>();
 
 }

@@ -6,24 +6,25 @@ import java.io.*;
  * Created by Michał Zakrzewski on 2016-12-01.
  */
 public class Parser {
-    Constitution constitution;
-    String folder = "C://Documents/Moje/Java/Konstytucja/src/agh/cs/konstytucja/";
-    String path = "konstytucja.txt";
-    String prevLine = new String();
-    Chapter currentChapter;
-    Article currentArticle;
+    private Constitution constitution;
+    private String path = "C://Documents/Moje/Java/Konstytucja/src/agh/cs/konstytucja/konstytucja.txt";
+    private String prevLine = new String();
+    private String[] args;
+    private Chapter currentChapter;
+    private Article currentArticle;
     int chapNum = 1;
     int artNum = 1;
 
-    public Parser(Constitution constitution) {
+    public Parser(Constitution constitution, String args[]) {
+        this.args = args;
         this.constitution = constitution;
     }
 
-    public Constitution getConstitution() {
+    /*public Constitution getConstitution() {
         return this.constitution;
-    }
+    }*/
 
-    public void check(String line) {
+    private void check(String line) {
         if (line.startsWith("Rozdział")) {
             currentChapter = new Chapter();
             //currentChapter.number = getLineNum(line);
@@ -50,7 +51,7 @@ public class Parser {
         prevLine = line;
     }
 
-    private int getLineNum(String line) {
+    /*private int getLineNum(String line) {
         char c;
         int resArt = 0;
         String resChap = new String();
@@ -67,9 +68,9 @@ public class Parser {
         }
 
         return resArt != 0 ? resArt : toArabic(resChap);
-    }
+    }*/
 
-    private int toArabic(String resChap) {
+    /*private int toArabic(String resChap) {
         char c = ' ';
         char b = ' ';
         int res = 0;
@@ -105,10 +106,17 @@ public class Parser {
             b = c;
         }
         return res;
-    }
+    }*/
 
     public Constitution parse() {
-        try (BufferedReader br = new BufferedReader(new FileReader(folder + path))) {
+        boolean isPath = false;
+        for (String arg : args) {
+            if (arg.equals("-p")) isPath = true;
+            else if (isPath) {
+                if (arg.startsWith("C:")) this.path = arg;
+            }
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             for (String line; (line = br.readLine()) != null; ) {
                 check(line);
             }
@@ -116,10 +124,13 @@ public class Parser {
             System.out.println("Problem z odczytaniem pliku " + e.getMessage());
         }
         constitution.articles.forEach(this::joinWordPartsRunner);
+        /*for(Article article : constitution.articles){
+            article = joinWordPartsRunner(article);
+        }*/
         return this.constitution;
     }
 
-   private void joinWordPartsRunner(Article article) throws IndexOutOfBoundsException {
+    private void joinWordPartsRunner(Article article) throws IndexOutOfBoundsException {
         String firstline;
         String secondline;
         firstline = article.text.get(0);
@@ -129,36 +140,32 @@ public class Parser {
             return;
         }
         if (firstline.endsWith("-"))
-            joinWordParts(firstline, secondline);
-        article.text.set(0, firstline);
-        article.text.set(1, secondline);
-        firstline = secondline;
+            joinWordParts(firstline, secondline, 0, 1, article);
+        firstline = article.text.get(1);
 
         for (int i = 2; i < article.text.size(); i++) {
             secondline = article.text.get(i);
 
             if (firstline.endsWith("-"))
-                joinWordParts(firstline, secondline);
-            article.text.set(i - 1, firstline);
-            article.text.set(i, secondline);
+                joinWordParts(firstline, secondline, i - 1, i, article);
 
-            firstline = secondline;
+            firstline = article.text.get(i);
         }
+
     }
 
-    private void joinWordParts(String firstline, String secondline) {
+    private void joinWordParts(String firstline, String secondline, int firstIndex, int secondIndex, Article article) {
         String wordPart = new String();
         char c = secondline.charAt(0);
         for (int i = 1; c != ' ' && i < secondline.length(); c = secondline.charAt(i++)) {
             wordPart += c;
         }
 
+        secondline = secondline.substring((wordPart.length() + 1), (secondline.length()));
         firstline = firstline.substring(0, firstline.length() - 1) + wordPart;
-        secondline = secondline.substring(wordPart.length() + 1, secondline.length());
 
-        //System.out.println(firstline);
-        //System.out.println(secondline);
-        //System.out.println(wordPart);
+        article.text.set(firstIndex, firstline);
+        article.text.set(secondIndex, secondline);
     }
 
 }

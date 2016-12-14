@@ -7,8 +7,8 @@ import java.util.List;
  * Created by Michał Zakrzewski on 2016-12-09.
  */
 public class ShowTime {
-    String[] args;
-    Constitution constitution;
+    private String[] args;
+    private Constitution constitution;
     private List<Integer> chapterShown = new LinkedList<>();
     private List<Integer> articleShown = new LinkedList<>();
 
@@ -20,9 +20,9 @@ public class ShowTime {
     public void parse() {
         boolean isChapter = false;
         for (String arg : args) {
-            if (arg.toLowerCase().equals("-r")) {
+            if (arg.toLowerCase().equals("-c")) {
                 isChapter = true;
-            } else if (arg.toLowerCase().equals("-c")) {
+            } else if (arg.toLowerCase().equals("-a")) {
                 isChapter = false;
             } else if (isChapter) {
                 parseChap(arg);
@@ -52,13 +52,15 @@ public class ShowTime {
         int end = 0;
         for (int i = 0; i < arg.length(); i++) {
             c = arg.charAt(i);
-            end *= 10;
             if (c == '-') {
+                if (end == 0) return;
                 start = end;
                 end = 0;
-            } else if (Character.getNumericValue(c) >= 0 && Character.getNumericValue(c) <= 9)
+            } else if (Character.getNumericValue(c) >= 0 && Character.getNumericValue(c) <= 9) {
+                end *= 10;
                 end += Character.getNumericValue(c);
-            else return;
+                //end *= 10;
+            } else return;
         }
         if (start == 0) articleShown.add(end - 1);
         else {

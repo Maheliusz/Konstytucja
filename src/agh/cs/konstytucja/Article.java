@@ -8,8 +8,8 @@ import java.util.List;
  * Created by Michał Zakrzewski on 2016-11-30.
  */
 public class Article {
-    List<String> text = new LinkedList<>();
-    int number;
+    public List<String> text = new LinkedList<>();
+    public int number;
 
     public void print() {
         System.out.println("Artykuł " + number);
