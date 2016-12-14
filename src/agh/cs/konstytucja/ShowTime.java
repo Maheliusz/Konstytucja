@@ -17,7 +17,7 @@ public class ShowTime {
         this.constitution = constitution;
     }
 
-    public void parse(String[] args) {
+    public void parse() {
         boolean isChapter = false;
         for (String arg : args) {
             if (arg.toLowerCase().equals("-r")) {
@@ -51,7 +51,7 @@ public class ShowTime {
         for (int i = 0; i < arg.length(); i++) {
             c = arg.charAt(i);
             end *= 10;
-            if (c == '-' && start == 0) {
+            if (c == '-') {
                 start = end;
                 end = 0;
             }
@@ -65,8 +65,8 @@ public class ShowTime {
     }
 
     private void show() {
-        chapterShown.stream().filter(i -> i < constitution.chapters.size()).forEach(i -> constitution.chapters.get(i).print());
-        articleShown.stream().filter(i -> i < constitution.articles.size()).forEach(i -> constitution.articles.get(i).print());
+        //chapterShown.stream().filter(i -> i < constitution.chapters.size()).forEach(i -> constitution.chapters.get(i).print());
+        //articleShown.stream().filter(i -> i < constitution.articles.size()).forEach(i -> constitution.articles.get(i).print());
     }
 
 }

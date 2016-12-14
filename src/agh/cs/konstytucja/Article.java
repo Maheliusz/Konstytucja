@@ -13,7 +13,6 @@ public class Article {
 
     public void print() {
         System.out.println("Artykuł " + number);
-        int i = 0;
         for(String line : text){
             System.out.println(line);
         }

@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Created by Michał Zakrzewski on 2016-12-01.
  */
-public class Parser {
+public class Parser{
     Constitution constitution;
     String folder = "C://Documents/Moje/Java/Konstytucja/src/agh/cs/konstytucja/";
     String path = "konstytucja.txt";
@@ -107,7 +107,7 @@ public class Parser {
         return res;
     }
 
-    public void parse() {
+    public void parse(){
         try (BufferedReader br = new BufferedReader(new FileReader(folder + path))) {
             for (String line; (line = br.readLine()) != null; ) {
                 check(line);
@@ -118,7 +118,7 @@ public class Parser {
         constitution.articles.forEach(this::joinWordPartsRunner);
     }
 
-    private void joinWordPartsRunner(Article article) {
+    private void joinWordPartsRunner(Article article) throws IndexOutOfBoundsException{
         String firstline;
         String secondline;
         firstline = article.text.get(0);
@@ -127,17 +127,23 @@ public class Parser {
         } catch (IndexOutOfBoundsException e) {
             return;
         }
-        if (firstline.endsWith("-\n"))
+        if (firstline.endsWith("-"))
             joinWordParts(firstline, secondline);
         //article.text.set(0, firstline);
         //article.text.set(1, secondline);
         firstline = secondline;
+        System.out.println(firstline);
+        System.out.println(secondline);
+        System.out.println("XXXXXXXXXX");
         for (int i = 2; i < article.text.size(); i++) {
             secondline = article.text.get(i);
-            if (firstline.endsWith("-\n"))
+            if (firstline.endsWith("-"))
                 joinWordParts(firstline, secondline);
             //article.text.set(i - 1, firstline);
             //article.text.set(i, secondline);
+            System.out.println(firstline);
+            System.out.println(secondline);
+            System.out.println("XXXXXXXXXX");
             firstline = secondline;
         }
     }
@@ -150,7 +156,7 @@ public class Parser {
         for (c = secondline.charAt(i); c != ' ' && c != '\n'; i++) {
             wordPart += c;
         }
-        firstline = firstline.substring(0, firstline.length() - 3) + wordPart;
+        firstline = firstline.substring(0, firstline.length() - 2) + wordPart;
         secondline = secondline.substring(wordPart.length() + 1, secondline.length() - 1);
 
     }
