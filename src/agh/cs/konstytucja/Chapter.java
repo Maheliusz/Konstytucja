@@ -11,8 +11,15 @@ public class Chapter {
     List<Article> articles = new ArrayList<>();
     String title;
     int number;
-    public Chapter(){
 
+    public void print() {
+        System.out.println("ROZDZIAL " + number);
+        int i = 0;
+        for (Article article; i < articles.size(); i++) {
+            article = articles.get(i);
+            article.print();
+        }
+        System.out.println();
     }
 
 }
